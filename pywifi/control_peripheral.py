@@ -1,8 +1,10 @@
+"""Module that controls toggling Wi-Fi on or off."""
+
 import logging
 import subprocess
 from typing import NoReturn, Union
 
-from .model import settings, ERRORS, process_err
+from .model import ERRORS, process_err, settings
 
 
 def get_connection_info(logger: logging.Logger, target: str = "SSID") -> Union[str, None]:

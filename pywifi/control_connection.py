@@ -1,10 +1,12 @@
+"""Module that controls Wi-Fi connect or disconnect."""
+
 import logging
 import os
 import subprocess
 
 import jinja2
 
-from .model import settings, process_err, ERRORS
+from .model import ERRORS, process_err, settings
 
 
 class ControlConnection:

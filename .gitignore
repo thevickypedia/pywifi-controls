@@ -1,5 +1,12 @@
+.env
 .idea
 venv
-.env
+
+# Build
 dist
 pywifi_controls.egg-info
+
+# Docs
+_build
+_static
+_templates

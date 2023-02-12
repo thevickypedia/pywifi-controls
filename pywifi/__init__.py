@@ -1,6 +1,6 @@
 """Place holder for package."""
 
-from .control_connection import ControlConnection
-from .control_peripheral import ControlPeripheral
+from .control_connection import ControlConnection  # noqa: F401
+from .control_peripheral import ControlPeripheral  # noqa: F401
 
-version = "0.0.0b"
+version = "0.0.4"
