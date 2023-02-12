@@ -17,7 +17,7 @@ classifiers = [
 keywords = ["pywifi", "display-settings", "brightness-control"]
 requires-python = ">=3"
 dependencies = [
-    "Jinja2==3.1.2", "pyobjc; platform_system=='Darwin'"
+    "python-dotenv>=0.21.0", "Jinja2==3.1.2", "pyobjc; platform_system=='Darwin'"
 ]
 
 [tool.setuptools]
@@ -27,7 +27,7 @@ packages = ["pywifi"]
 version = {attr = "pywifi.version"}
 
 [build-system]
-requires      = ["setuptools", "wheel", "Jinja2==3.1.2"]
+requires      = ["setuptools", "wheel", "Jinja2==3.1.2", "python-dotenv>=0.21.0"]
 build-backend = "setuptools.build_meta"
 
 [project.optional-dependencies]

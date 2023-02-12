@@ -4,6 +4,11 @@ import platform
 import subprocess
 from typing import Tuple, Union
 
+import dotenv
+
+if os.path.isfile(".env"):
+    dotenv.load_dotenv(dotenv_path=".env")
+
 ERRORS: Tuple = (subprocess.CalledProcessError, subprocess.SubprocessError, FileNotFoundError,)
 
 

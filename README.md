@@ -28,10 +28,16 @@ ControlPeripheral().disable()  # Turn off Wi-Fi
 ```python
 from pywifi import ControlConnection
 
+# Arguments passed during object instantiation
+controller = ControlConnection(wifi_ssid='ssid', wifi_password='password')
+controller.wifi_connector()
+
+# Argument values taken from env vars
 ControlConnection().wifi_connector()
 ```
 
 ### Arguments
+Environment variables are loaded from a `.env` file.
 - **wifi_ssid** - SSID of the Wi-Fi connection.
 - **wifi_password** - Password for the Wi-Fi connection.
 

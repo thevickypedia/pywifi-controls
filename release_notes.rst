@@ -1,6 +1,10 @@
 Release Notes
 =============
 
+0.0.5 (02/11/2023)
+------------------
+- Support `.env` file to load env vars
+
 0.0.4 (02/11/2023)
 ------------------
 - Onboard a stable release version

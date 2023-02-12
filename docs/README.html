@@ -45,14 +45,14 @@
   <p><strong>Platform Supported</strong></p>
 <p><img alt="Generic badge" src="https://img.shields.io/badge/Platform-Linux%7CMacOS%7CWindows-1f425f.svg" /></p>
 <p><strong>Deployments</strong></p>
-<p><a class="reference external" href="https://github.com/thevickypedia/pynotification/actions/workflows/pages/pages-build-deployment"><img alt="pages-build-deployment" src="https://github.com/thevickypedia/pynotification/actions/workflows/pages/pages-build-deployment/badge.svg" /></a>
-<a class="reference external" href="https://github.com/thevickypedia/pynotification/actions/workflows/python-publish.yml"><img alt="pypi-publish" src="https://github.com/thevickypedia/pynotification/actions/workflows/python-publish.yml/badge.svg" /></a></p>
+<p><a class="reference external" href="https://github.com/thevickypedia/pywifi-controls/actions/workflows/pages/pages-build-deployment"><img alt="pages-build-deployment" src="https://github.com/thevickypedia/pywifi-controls/actions/workflows/pages/pages-build-deployment/badge.svg" /></a>
+<a class="reference external" href="https://github.com/thevickypedia/pywifi-controls/actions/workflows/python-publish.yml"><img alt="pypi-publish" src="https://github.com/thevickypedia/pywifi-controls/actions/workflows/python-publish.yml/badge.svg" /></a></p>
 <section id="pywifi-controls">
 <h1>PyWiFi-controls<a class="headerlink" href="#pywifi-controls" title="Permalink to this heading">¶</a></h1>
 <p>Python module to control <code class="docutils literal notranslate"><span class="pre">WiFi</span></code> on Linux, Windows and macOS</p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pynotification
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pywifi-controls
 </pre></div>
 </div>
 </section>
@@ -68,19 +68,25 @@
 <p><strong>Connect to a Wi-Fi SSID</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pywifi</span> <span class="kn">import</span> <span class="n">ControlConnection</span>
 
+<span class="c1"># Arguments passed during object instantiation</span>
+<span class="n">controller</span> <span class="o">=</span> <span class="n">ControlConnection</span><span class="p">(</span><span class="n">wifi_ssid</span><span class="o">=</span><span class="s1">&#39;ssid&#39;</span><span class="p">,</span> <span class="n">wifi_password</span><span class="o">=</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
+<span class="n">controller</span><span class="o">.</span><span class="n">wifi_connector</span><span class="p">()</span>
+
+<span class="c1"># Argument values taken from env vars</span>
 <span class="n">ControlConnection</span><span class="p">()</span><span class="o">.</span><span class="n">wifi_connector</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="arguments">
 <h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">¶</a></h2>
+<p>Environment variables are loaded from a <code class="docutils literal notranslate"><span class="pre">.env</span></code> file.</p>
 <ul class="simple">
 <li><p><strong>wifi_ssid</strong> - SSID of the Wi-Fi connection.</p></li>
 <li><p><strong>wifi_password</strong> - Password for the Wi-Fi connection.</p></li>
 </ul>
 </section>
 <section id="release-notes">
-<h2><a class="reference external" href="https://github.com/thevickypedia/pynotification/blob/main/release_notes.rst">Release Notes</a><a class="headerlink" href="#release-notes" title="Permalink to this heading">¶</a></h2>
+<h2><a class="reference external" href="https://github.com/thevickypedia/pywifi-controls/blob/main/release_notes.rst">Release Notes</a><a class="headerlink" href="#release-notes" title="Permalink to this heading">¶</a></h2>
 <p><strong>Requirement</strong></p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>changelog-generator
 </pre></div>
@@ -105,17 +111,17 @@
 <section id="pypi-package">
 <h2>Pypi Package<a class="headerlink" href="#pypi-package" title="Permalink to this heading">¶</a></h2>
 <p><a class="reference external" href="https://packaging.python.org/tutorials/packaging-projects/"><img alt="pypi-module" src="https://img.shields.io/badge/Software%20Repository-pypi-1f425f.svg" /></a></p>
-<p><a class="reference external" href="https://pypi.org/project/pynotification/">https://pypi.org/project/pynotification/</a></p>
+<p><a class="reference external" href="https://pypi.org/project/pywifi-controls/">https://pypi.org/project/pywifi-controls/</a></p>
 </section>
 <section id="runbook">
 <h2>Runbook<a class="headerlink" href="#runbook" title="Permalink to this heading">¶</a></h2>
 <p><a class="reference external" href="https://www.sphinx-doc.org/en/master/man/sphinx-autogen.html"><img alt="made-with-sphinx-doc" src="https://img.shields.io/badge/Code%20Docs-Sphinx-1f425f.svg" /></a></p>
-<p><a class="reference external" href="https://thevickypedia.github.io/pynotification/">https://thevickypedia.github.io/pynotification/</a></p>
+<p><a class="reference external" href="https://thevickypedia.github.io/pywifi-controls/">https://thevickypedia.github.io/pywifi-controls/</a></p>
 </section>
 <section id="license-copyright">
 <h2>License &amp; copyright<a class="headerlink" href="#license-copyright" title="Permalink to this heading">¶</a></h2>
 <p>© Vignesh Rao</p>
-<p>Licensed under the <a class="reference external" href="https://github.com/thevickypedia/pynotification/blob/main/LICENSE">MIT License</a></p>
+<p>Licensed under the <a class="reference external" href="https://github.com/thevickypedia/pywifi-controls/blob/main/LICENSE">MIT License</a></p>
 </section>
 </section>
 
