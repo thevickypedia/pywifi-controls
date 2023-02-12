@@ -4,8 +4,6 @@ import logging
 import os
 import subprocess
 
-import jinja2
-
 from .model import ERRORS, process_err, settings
 
 
@@ -109,6 +107,7 @@ class ControlConnection:
 
     def win_create_new_connection(self) -> bool:
         """Establish a new connection using a xml config for Windows."""
+        import jinja2  # windows specific
         self.logger.info(f"Establishing a new connection to {self.wifi_ssid}")
         command = "netsh wlan add profile filename=\"" + self.wifi_ssid + ".xml\"" + " interface=Wi-Fi"
         rendered = jinja2.Template(settings.win_wifi_xml).render(WIFI_SSID=self.wifi_ssid,

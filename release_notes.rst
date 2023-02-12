@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+0.0.6 (02/11/2023)
+------------------
+- Minimize `pyobjc` to install required framework only
+- Install Jinja2 only on Windows
+
 0.0.5 (02/11/2023)
 ------------------
 - Support `.env` file to load env vars
