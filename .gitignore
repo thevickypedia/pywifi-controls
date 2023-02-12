@@ -2,4 +2,4 @@
 venv
 .env
 dist
-*.egg-info
+pywifi_controls.egg-info
