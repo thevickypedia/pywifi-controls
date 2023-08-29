@@ -44,12 +44,12 @@ Environment variables are loaded from a `.env` file.
 ## [Release Notes](https://github.com/thevickypedia/pywifi-controls/blob/main/release_notes.rst)
 **Requirement**
 ```shell
-python -m pip install changelog-generator
+python -m pip install gitverse
 ```
 
 **Usage**
 ```shell
-changelog reverse -f release_notes.rst -t 'Release Notes'
+gitverse-release reverse -f release_notes.rst -t 'Release Notes'
 ```
 
 ## Linting

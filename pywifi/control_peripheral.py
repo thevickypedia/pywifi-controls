@@ -2,7 +2,7 @@
 
 import logging
 import subprocess
-from typing import NoReturn, Union
+from typing import Union
 
 from .model import ERRORS, process_err, settings
 
@@ -80,7 +80,7 @@ class ControlPeripheral:
             self.logger.setLevel(level=logging.DEBUG)
         self.name = name or get_connection_info(target='Name', logger=self.logger) or "Wi-Fi"
 
-    def darwin_enable(self) -> NoReturn:
+    def darwin_enable(self) -> None:
         """Enables Wi-Fi on macOS."""
         try:
             result = subprocess.check_output("networksetup -setairportpower airport on", shell=True)
@@ -88,7 +88,7 @@ class ControlPeripheral:
         except ERRORS as error:
             process_err(error=error, logger=self.logger)
 
-    def darwin_disable(self) -> NoReturn:
+    def darwin_disable(self) -> None:
         """Disables Wi-Fi on macOS."""
         try:
             result = subprocess.check_output("networksetup -setairportpower airport off", shell=True)
@@ -96,7 +96,7 @@ class ControlPeripheral:
         except ERRORS as error:
             process_err(error=error, logger=self.logger)
 
-    def linux_enable(self) -> NoReturn:
+    def linux_enable(self) -> None:
         """Enables Wi-Fi on Linux."""
         try:
             result = subprocess.run("nmcli radio wifi on", shell=True)
@@ -108,7 +108,7 @@ class ControlPeripheral:
         except ERRORS as error:
             process_err(error=error, logger=self.logger)
 
-    def linux_disable(self) -> NoReturn:
+    def linux_disable(self) -> None:
         """Disables Wi-Fi on Linux."""
         try:
             result = subprocess.run("nmcli radio wifi on", shell=True)
@@ -120,7 +120,7 @@ class ControlPeripheral:
         except ERRORS as error:
             process_err(error=error, logger=self.logger)
 
-    def win_enable(self) -> NoReturn:
+    def win_enable(self) -> None:
         """Enables Wi-Fi on Windows."""
         try:
             result = subprocess.check_output(f"netsh interface set interface {self.name!r} enabled", shell=True)
@@ -132,7 +132,7 @@ class ControlPeripheral:
         except ERRORS as error:
             process_err(error=error, logger=self.logger)
 
-    def win_disable(self) -> NoReturn:
+    def win_disable(self) -> None:
         """Disables Wi-Fi on Windows."""
         try:
             result = subprocess.check_output(f"netsh interface set interface {self.name!r} disabled", shell=True)
@@ -144,7 +144,7 @@ class ControlPeripheral:
         except ERRORS as error:
             process_err(error=error, logger=self.logger)
 
-    def enable(self) -> NoReturn:
+    def enable(self) -> None:
         """Enable Wi-Fi (OS-agnostic)."""
         if settings.operating_system == "Darwin":
             self.darwin_enable()
@@ -153,7 +153,7 @@ class ControlPeripheral:
         else:
             self.linux_enable()
 
-    def disable(self) -> NoReturn:
+    def disable(self) -> None:
         """Disable Wi-Fi (OS-agnostic)."""
         if settings.operating_system == "Darwin":
             self.darwin_disable()
