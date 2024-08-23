@@ -21,9 +21,10 @@ def get_connection_info(logger: logging.Logger, target: str = "SSID") -> Union[s
                 stdout=subprocess.PIPE
             )
         elif settings.operating_system == "Windows":
-            process = subprocess.check_output("netsh wlan show interfaces", shell=True)
+            process = subprocess.check_output(f"{settings.netsh} wlan show interfaces", shell=True)
         elif settings.operating_system == "Linux":
-            process = subprocess.check_output("nmcli -t -f name connection show --active | head -n 1", shell=True)
+            process = subprocess.check_output(f"{settings.nmcli} -t -f name connection show --active | head -n 1",
+                                              shell=True)
         else:
             return
     except (subprocess.CalledProcessError, subprocess.CalledProcessError, FileNotFoundError) as error:
@@ -83,7 +84,7 @@ class ControlPeripheral:
     def darwin_enable(self) -> None:
         """Enables Wi-Fi on macOS."""
         try:
-            result = subprocess.check_output("networksetup -setairportpower airport on", shell=True)
+            result = subprocess.check_output(f"{settings.networksetup} -setairportpower airport on", shell=True)
             self.logger.info(' '.join(result.decode(encoding="UTF-8").splitlines()))
         except ERRORS as error:
             process_err(error=error, logger=self.logger)
@@ -91,7 +92,7 @@ class ControlPeripheral:
     def darwin_disable(self) -> None:
         """Disables Wi-Fi on macOS."""
         try:
-            result = subprocess.check_output("networksetup -setairportpower airport off", shell=True)
+            result = subprocess.check_output(f"{settings.networksetup} -setairportpower airport off", shell=True)
             self.logger.info(' '.join(result.decode(encoding="UTF-8").splitlines()))
         except ERRORS as error:
             process_err(error=error, logger=self.logger)
@@ -99,7 +100,7 @@ class ControlPeripheral:
     def linux_enable(self) -> None:
         """Enables Wi-Fi on Linux."""
         try:
-            result = subprocess.run("nmcli radio wifi on", shell=True)
+            result = subprocess.run(f"{settings.nmcli} radio wifi on", shell=True)
             if result.returncode:
                 self.logger.error("Failed to enable Wi-Fi")
             else:
@@ -111,7 +112,7 @@ class ControlPeripheral:
     def linux_disable(self) -> None:
         """Disables Wi-Fi on Linux."""
         try:
-            result = subprocess.run("nmcli radio wifi on", shell=True)
+            result = subprocess.run(f"{settings.nmcli} radio wifi on", shell=True)
             if result.returncode:
                 self.logger.error("Failed to disable Wi-Fi")
             else:
@@ -123,7 +124,8 @@ class ControlPeripheral:
     def win_enable(self) -> None:
         """Enables Wi-Fi on Windows."""
         try:
-            result = subprocess.check_output(f"netsh interface set interface {self.name!r} enabled", shell=True)
+            result = subprocess.check_output(f"{settings.netsh} interface set interface {self.name!r} enabled",
+                                             shell=True)
             result = result.decode(encoding="UTF-8").strip()
             if result:
                 self.logger.warning(result)
@@ -135,7 +137,8 @@ class ControlPeripheral:
     def win_disable(self) -> None:
         """Disables Wi-Fi on Windows."""
         try:
-            result = subprocess.check_output(f"netsh interface set interface {self.name!r} disabled", shell=True)
+            result = subprocess.check_output(f"{settings.netsh} interface set interface {self.name!r} disabled",
+                                             shell=True)
             result = result.decode(encoding="UTF-8").strip()
             if result:
                 self.logger.warning(result)

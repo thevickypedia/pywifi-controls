@@ -1,34 +1,42 @@
-# This workflow will upload a Python Package using Twine when a release is created
-
 name: pypi-publish
 
-# Controls when the workflow will run
 on:
-  workflow_dispatch: {}
   release:
-    types: [ published ]
+    types:
+      - published
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.py'
+      - 'pyproject.toml'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        type: choice
+        description: Dry run mode
+        required: true
+        options:
+          - "true"
+          - "false"
 
 jobs:
-  deploy:
-
-    runs-on: ubuntu-latest
-
+  pypi-publisher:
+    runs-on: thevickypedia-lite
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install build twine
-    - name: Create packages
-      run: python -m build
-    - name: Run twine check
-      run: twine check dist/*
-    - name: Upload to pypi
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USER }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-      run: twine upload dist/*.whl
+      - name: Set dry-run
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "::notice title=DryRun::Setting dry run to ${{ inputs.dry_run }} for '${{ github.event_name }}' event"
+            echo "dry_run=${{ inputs.dry_run }}" >> $GITHUB_ENV
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "::notice title=DryRun::Setting dry run to true for '${{ github.event_name }}' event"
+            echo "dry_run=true" >> $GITHUB_ENV
+          else
+            echo "::notice title=DryRun::Setting dry run to false for '${{ github.event_name }}' event"
+            echo "dry_run=false" >> $GITHUB_ENV
+          fi
+      - uses: thevickypedia/pypi-publisher@v3
+        with:
+          token: ${{ secrets.PYPI_TOKEN }}
+          dry-run: ${{ env.dry_run }}

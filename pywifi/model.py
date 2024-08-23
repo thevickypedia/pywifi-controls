@@ -33,6 +33,21 @@ def process_err(error: Union[subprocess.CalledProcessError, subprocess.Subproces
         return ""
 
 
+class Commands:
+    """Wrapper for OS specific commands.
+
+    >>> Commands
+
+    """
+
+    nmcli: str = "/usr/bin/nmcli"  # Linux
+    networksetup: str = "/usr/sbin/networksetup"  # macOS
+    netsh: str = "C:\\Windows\\System32\\netsh.exe"  # Windows
+
+
+commands = Commands()
+
+
 class Settings:
     """Wrapper for settings.
 
@@ -44,6 +59,10 @@ class Settings:
         """Loads all required args."""
         self.wifi_ssid: str = os.environ.get('WIFI_SSID') or os.environ.get('wifi_ssid')
         self.wifi_password: str = os.environ.get('WIFI_PASSWORD') or os.environ.get('wifi_password')
+        self.nmcli: str = os.environ.get("NMCLI") or os.environ.get("nmcli") or commands.nmcli
+        self.netsh: str = os.environ.get("NETSH") or os.environ.get("netsh") or commands.netsh
+        self.networksetup: str = os.environ.get("NETWORKSETUP") or \
+            os.environ.get("networksetup") or commands.networksetup
         self.operating_system: str = platform.system()
         if self.operating_system not in ("Linux", "Darwin", "Windows"):
             raise OSError(

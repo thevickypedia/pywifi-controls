@@ -77,7 +77,7 @@ class ControlConnection:
 
     def linux_connector(self) -> bool:
         """Connects to Wi-Fi using SSID and password in env vars for Linux."""
-        cmd = f"nmcli d wifi connect '{self.wifi_ssid}' password '{self.wifi_password}'"
+        cmd = f"{settings.nmcli} d wifi connect '{self.wifi_ssid}' password '{self.wifi_password}'"
         try:
             result = subprocess.check_output(cmd, shell=True)
         except ERRORS as error:
@@ -90,7 +90,8 @@ class ControlConnection:
     def win_connector(self) -> bool:
         """Connects to Wi-Fi using SSID and password in env vars for Windows."""
         self.logger.info(f'Connecting to {self.wifi_ssid} in WiFi range')
-        command = "netsh wlan connect name=\"" + self.wifi_ssid + "\" ssid=\"" + self.wifi_ssid + \
+        command = f"{settings.netsh} wlan connect name=\"" + self.wifi_ssid + \
+                  "\" ssid=\"" + self.wifi_ssid + \
                   "\" interface=Wi-Fi"
         try:
             output = subprocess.check_output(command, shell=True)
@@ -109,7 +110,7 @@ class ControlConnection:
         """Establish a new connection using a xml config for Windows."""
         import jinja2  # windows specific
         self.logger.info(f"Establishing a new connection to {self.wifi_ssid}")
-        command = "netsh wlan add profile filename=\"" + self.wifi_ssid + ".xml\"" + " interface=Wi-Fi"
+        command = f"{settings.netsh} wlan add profile filename=\"" + self.wifi_ssid + ".xml\"" + " interface=Wi-Fi"
         rendered = jinja2.Template(settings.win_wifi_xml).render(WIFI_SSID=self.wifi_ssid,
                                                                  WIFI_PASSWORD=self.wifi_password)
         with open(f'{self.wifi_ssid}.xml', 'w') as file:
