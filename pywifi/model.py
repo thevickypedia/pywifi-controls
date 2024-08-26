@@ -2,7 +2,7 @@ import logging
 import os
 import platform
 import subprocess
-from typing import Tuple, Union
+from typing import Any, Tuple, Union
 
 import dotenv
 
@@ -48,6 +48,30 @@ class Commands:
 commands = Commands()
 
 
+def get_env(key: str, default: Any = None, alias: str = None):
+    """Get environment variable (case insensitive) with default and alias options.
+
+    Args:
+        key: Key of the enviornment variable.
+        default: Default value in case key is not found in env var. Defaults to None.
+        alias: Alias key. Defaults to None.
+
+    See Also:
+        Order of execution:
+            1. key
+            2. alias
+            3. default
+    """
+    if os.environ.get("PyWifi-Sphinx"):
+        return None
+    if (value := os.environ.get(key.lower()) or os.environ.get(key.upper())):
+        return value
+    if alias:
+        if (value := os.environ.get(alias.lower()) or os.environ.get(alias.upper())):
+            return value
+    return default
+
+
 class Settings:
     """Wrapper for settings.
 
@@ -55,21 +79,19 @@ class Settings:
 
     """
 
-    def __init__(self):
-        """Loads all required args."""
-        self.wifi_ssid: str = os.environ.get('WIFI_SSID') or os.environ.get('wifi_ssid')
-        self.wifi_password: str = os.environ.get('WIFI_PASSWORD') or os.environ.get('wifi_password')
-        self.nmcli: str = os.environ.get("NMCLI") or os.environ.get("nmcli") or commands.nmcli
-        self.netsh: str = os.environ.get("NETSH") or os.environ.get("netsh") or commands.netsh
-        self.networksetup: str = os.environ.get("NETWORKSETUP") or \
-            os.environ.get("networksetup") or commands.networksetup
-        self.operating_system: str = platform.system()
-        if self.operating_system not in ("Linux", "Darwin", "Windows"):
-            raise OSError(
-                f"Package is unsupported in {self.operating_system!r}"
-            )
-        with open(os.path.join(os.path.dirname(__file__), 'win_wifi_config.xml')) as file:
-            self.win_wifi_xml = file.read()
+    root_pass: str = get_env("root_pass", alias="password")
+    wifi_ssid: str = get_env("wifi_ssid")
+    wifi_password: str = get_env("wifi_password")
+    nmcli: str = get_env("nmcli", default=commands.nmcli)
+    netsh: str = get_env("netsh", default=commands.netsh)
+    networksetup: str = get_env("networksetup", default=commands.networksetup)
 
 
 settings = Settings()
+settings.operating_system = platform.system()
+if settings.operating_system not in ("Linux", "Darwin", "Windows"):
+    raise OSError(
+        f"Package is unsupported in {settings.operating_system!r}"
+    )
+with open(os.path.join(os.path.dirname(__file__), 'win_wifi_config.xml')) as file:
+    settings.win_wifi_xml = file.read()

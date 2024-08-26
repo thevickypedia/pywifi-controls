@@ -1,6 +1,10 @@
 Release Notes
 =============
 
+0.8 (08/25/2024)
+----------------
+- Includes an option to run as super user for Linux OS
+
 0.7 (08/29/2023)
 ----------------
 - Includes some minor modifications in type hinting

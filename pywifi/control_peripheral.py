@@ -99,24 +99,50 @@ class ControlPeripheral:
 
     def linux_enable(self) -> None:
         """Enables Wi-Fi on Linux."""
+        if settings.root_pass:
+            cmd = f"echo {settings.root_pass} | sudo -S {settings.nmcli} radio wifi on"
+        else:
+            cmd = f"{settings.nmcli} radio wifi on"
         try:
-            result = subprocess.run(f"{settings.nmcli} radio wifi on", shell=True)
+            result = subprocess.run(
+                cmd,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
             if result.returncode:
-                self.logger.error("Failed to enable Wi-Fi")
+                self.logger.error("Failed to enable Wi-Fi - %s", result.returncode)
+                if decoded_stderr := result.stderr.decode('utf-8'):
+                    self.logger.error(f"stderr: {decoded_stderr}")
             else:
                 self.logger.info("Wi-Fi has been enabled.")
+                if decoded_stdout := result.stdout.decode('utf-8'):
+                    self.logger.debug(f"stdout: {decoded_stdout}")
             return result.returncode == 0
         except ERRORS as error:
             process_err(error=error, logger=self.logger)
 
     def linux_disable(self) -> None:
         """Disables Wi-Fi on Linux."""
+        if settings.root_pass:
+            cmd = f"echo {settings.root_pass} | sudo -S {settings.nmcli} radio wifi off"
+        else:
+            cmd = f"{settings.nmcli} radio wifi off"
         try:
-            result = subprocess.run(f"{settings.nmcli} radio wifi on", shell=True)
+            result = subprocess.run(
+                cmd,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
             if result.returncode:
-                self.logger.error("Failed to disable Wi-Fi")
+                self.logger.error("Failed to disable Wi-Fi - %s", result.returncode)
+                if decoded_stderr := result.stderr.decode('utf-8'):
+                    self.logger.error(f"stderr: {decoded_stderr}")
             else:
                 self.logger.info("Wi-Fi has been disabled.")
+                if decoded_stdout := result.stdout.decode('utf-8'):
+                    self.logger.debug(f"stdout: {decoded_stdout}")
             return result.returncode == 0
         except ERRORS as error:
             process_err(error=error, logger=self.logger)
@@ -126,9 +152,8 @@ class ControlPeripheral:
         try:
             result = subprocess.check_output(f"{settings.netsh} interface set interface {self.name!r} enabled",
                                              shell=True)
-            result = result.decode(encoding="UTF-8").strip()
-            if result:
-                self.logger.warning(result)
+            if result := result.decode(encoding="UTF-8"):
+                self.logger.error(result)
             else:
                 self.logger.info(f"{self.name} has been enabled.")
         except ERRORS as error:
@@ -141,7 +166,7 @@ class ControlPeripheral:
                                              shell=True)
             result = result.decode(encoding="UTF-8").strip()
             if result:
-                self.logger.warning(result)
+                self.logger.error(result)
             else:
                 self.logger.info(f"{self.name} has been disabled.")
         except ERRORS as error:
