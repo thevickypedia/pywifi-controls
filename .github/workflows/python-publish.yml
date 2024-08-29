@@ -36,6 +36,7 @@ jobs:
             echo "::notice title=DryRun::Setting dry run to false for '${{ github.event_name }}' event"
             echo "dry_run=false" >> $GITHUB_ENV
           fi
+        shell: bash
       - uses: thevickypedia/pypi-publisher@v3
         with:
           token: ${{ secrets.PYPI_TOKEN }}
