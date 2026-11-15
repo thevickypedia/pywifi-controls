@@ -18,7 +18,7 @@ keywords = ["pywifi", "display-settings", "brightness-control"]
 requires-python = ">=3"
 dependencies = [
     "python-dotenv>=0.21.0",
-    "Jinja2==3.1.2; platform_system=='Windows'",
+    "Jinja2==3.1.6; platform_system=='Windows'",
     "pyobjc-framework-CoreWLAN; platform_system=='Darwin'"
 ]
 
